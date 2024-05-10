@@ -110,10 +110,14 @@ codeunit 7268900 "TCNFuncionesCommissionsCOMI"
         xlLineAmount: Decimal;
         xlLineAmountLCY: Decimal;
         xlCommissionBaseAmount: Decimal;
+        xlSalesLineType: Integer;
+        xlTCNSalesLineTypeCOMI: Enum TCNSalesLineTypeCOMI;
     begin
 
         // se comprueba si la linea genera comision
-        if not HasCommissionF(pSalesInvoiceLine.Type, pSalesInvoiceLine."No.", pSalesInvoiceLine.RecordId()) then
+        xlSalesLineType := pSalesInvoiceLine.Type;
+        xlTCNSalesLineTypeCOMI := xlSalesLineType;
+        if not HasCommissionF(xlTCNSalesLineTypeCOMI, pSalesInvoiceLine."No.", pSalesInvoiceLine.RecordId()) then
             exit;
 
         if rlSalesInvoiceHeader.Get(pSalesInvoiceLine."Document No.") then begin
@@ -154,10 +158,14 @@ codeunit 7268900 "TCNFuncionesCommissionsCOMI"
         xlLineAmount: Decimal;
         xlLineAmountLCY: Decimal;
         xlCommissionBaseAmount: Decimal;
+        xlSalesLineType: Integer;
+        xlTCNSalesLineTypeCOMI: Enum TCNSalesLineTypeCOMI;
     begin
 
         // se comprueba si la linea genera comision
-        if not HasCommissionF(pSalesCrMemoLine.Type, pSalesCrMemoLine."No.", pSalesCrMemoLine.RecordId()) then
+        xlSalesLineType := pSalesCrMemoLine.Type;
+        xlTCNSalesLineTypeCOMI := xlSalesLineType;
+        if not HasCommissionF(xlTCNSalesLineTypeCOMI, pSalesCrMemoLine."No.", pSalesCrMemoLine.RecordId()) then
             exit;
 
         if rlSalesCrMemoHeader.Get(pSalesCrMemoLine."Document No.") then begin
