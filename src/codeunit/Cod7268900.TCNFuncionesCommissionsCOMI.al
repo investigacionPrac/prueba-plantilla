@@ -59,12 +59,17 @@ codeunit 7268900 "TCNFuncionesCommissionsCOMI"
         pUnitofMeasureCode: Code[10];
         pFechaRegistro: Date;
         pLineDiscountPct: Decimal;
-        pAmount: Decimal;
+        pCommissionBaseAmount: Decimal;
         pCodCliente: Code[20];
         pShortcutDimension1Code: Code[20];
         pShortcutDimension2Code: Code[20];
         pDimensionSetID: Integer;
-        pCodVendedor: Code[20])
+        pCodVendedor: Code[20];
+        pResponsibilityCenter: Code[10];
+        pAmountLCY: Decimal;
+        pAmount: Decimal;
+        pCurrencyCode: Code[10];
+        pCurrencyFactor: Decimal)
     var
         rlTCNCommissionsCOMI: Record TCNCommissionsCOMI;
         rlSalespersonPurchaser: Record "Salesperson/Purchaser";
@@ -74,21 +79,26 @@ codeunit 7268900 "TCNFuncionesCommissionsCOMI"
             rlTCNCommissionsCOMI.Validate(TipoDocumento, pTipo);
             rlTCNCommissionsCOMI.Validate(NoDocumento, pNoDocumento);
             rlTCNCommissionsCOMI.Validate(NoLinea, pNoLinea);
-            rlTCNCommissionsCOMI.Validate("ItemNo.", pItemNo);
+            rlTCNCommissionsCOMI.Validate("Item No.", pItemNo);
             rlTCNCommissionsCOMI.Validate("Variant Code", pVarianteCode);
             rlTCNCommissionsCOMI.Validate(Quantity, pQuantity);
             rlTCNCommissionsCOMI.Validate("Quantity (Base)", pQuantityBase);
             rlTCNCommissionsCOMI.Validate("Unit of Measure Code", pUnitofMeasureCode);
             rlTCNCommissionsCOMI.Validate("Line discount %", pLineDiscountPct);
-            rlTCNCommissionsCOMI.Validate(Importe, pAmount);
+            rlTCNCommissionsCOMI.Validate("Commission Base Amount", pCommissionBaseAmount);
+            rlTCNCommissionsCOMI.Validate("Amount LCY", pAmountLCY);
+            rlTCNCommissionsCOMI.Validate(Amount, pAmount);
+            rlTCNCommissionsCOMI.Validate("Currency Code", pCurrencyCode);
+            rlTCNCommissionsCOMI.Validate("Currency Factor", pCurrencyFactor);
             rlTCNCommissionsCOMI.Validate(FechaRegistro, pFechaRegistro);
             rlTCNCommissionsCOMI.Validate(CodCliente, pCodCliente);
             rlTCNCommissionsCOMI.Validate(CodVendedor, pCodVendedor);
+            rlTCNCommissionsCOMI.Validate("Responsibility Center", pResponsibilityCenter);
             rlTCNCommissionsCOMI.Validate("Shortcut Dimension 1 Code", pShortcutDimension1Code);
             rlTCNCommissionsCOMI.Validate("Shortcut Dimension 2 Code", pShortcutDimension2Code);
             rlTCNCommissionsCOMI.Validate("Dimension Set ID", pDimensionSetID);
             OnBeforeSetCommissionPct(rlSalespersonPurchaser, rlTCNCommissionsCOMI);
-            rlTCNCommissionsCOMI.Validate("%Comision", rlSalespersonPurchaser."Commission %");
+            rlTCNCommissionsCOMI.Validate("Commission %", rlSalespersonPurchaser."Commission %");
             rlTCNCommissionsCOMI.Insert(true);
         end;
     end;
@@ -97,18 +107,22 @@ codeunit 7268900 "TCNFuncionesCommissionsCOMI"
     var
         rlTCNCommissionsCOMI: Record TCNCommissionsCOMI;
         rlSalesInvoiceHeader: Record "Sales Invoice Header";
-        xlImporteSinTransporte: Decimal;
+        xlLineAmount: Decimal;
+        xlLineAmountLCY: Decimal;
+        xlCommissionBaseAmount: Decimal;
     begin
-        if EsEnvioF(pSalesInvoiceLine.Type, pSalesInvoiceLine."No.") then
-            exit;
 
-        if not TieneComisionF(pSalesInvoiceLine.Type, pSalesInvoiceLine."No.") then
+        // se comprueba si la linea genera comision
+        if not HasCommissionF(pSalesInvoiceLine.Type, pSalesInvoiceLine."No.", pSalesInvoiceLine.RecordId()) then
             exit;
-
-        //Pasamos el importe de línea sin IVA, sin descuento de linea y sin transporte.
-        xlImporteSinTransporte := CalcularImporteLineaF(pSalesInvoiceLine."Line Amount", rlSalesInvoiceHeader."Currency Factor");
 
         if rlSalesInvoiceHeader.Get(pSalesInvoiceLine."Document No.") then begin
+
+            //Pasamos el importe de línea sin IVA, sin descuento de linea y sin transporte.
+            xlLineAmount := pSalesInvoiceLine."Line Amount";
+            xlLineAmountLCY := ConvertCommissionBaseAmountF(xlLineAmount, rlSalesInvoiceHeader."Currency Factor");
+            xlCommissionBaseAmount := CalculateCommissionBaseAmountF(xlLineAmountLCY, pSalesInvoiceLine.RecordId(), rlSalesInvoiceHeader.RecordId());
+
             RegistrarComisionesGenericoF(rlTCNCommissionsCOMI.TipoDocumento::Invoice,
                 pSalesInvoiceLine."Document No.",
                 pSalesInvoiceLine."Line No.",
@@ -119,12 +133,17 @@ codeunit 7268900 "TCNFuncionesCommissionsCOMI"
                 pSalesInvoiceLine."Unit of Measure Code",
                 rlSalesInvoiceHeader."Posting Date",
                 pSalesInvoiceLine."Line Discount %",
-                xlImporteSinTransporte,
+                xlCommissionBaseAmount,
                 pSalesInvoiceLine."Sell-to Customer No.",
                 pSalesInvoiceLine."Shortcut Dimension 1 Code",
                 pSalesInvoiceLine."Shortcut Dimension 2 Code",
                 pSalesInvoiceLine."Dimension Set ID",
-                rlSalesInvoiceHeader."Salesperson Code");
+                rlSalesInvoiceHeader."Salesperson Code",
+                pSalesInvoiceLine."Responsibility Center",
+                xlLineAmountLCY,
+                xlLineAmount,
+                rlSalesInvoiceHeader."Currency Code",
+                rlSalesInvoiceHeader."Currency Factor");
         end;
     end;
 
@@ -132,19 +151,22 @@ codeunit 7268900 "TCNFuncionesCommissionsCOMI"
     var
         rlTCNCommissionsCOMI: Record TCNCommissionsCOMI;
         rlSalesCrMemoHeader: Record "Sales Cr.Memo Header";
-        xlImporteSinTransporte: Decimal;
+        xlLineAmount: Decimal;
+        xlLineAmountLCY: Decimal;
+        xlCommissionBaseAmount: Decimal;
     begin
 
-        if EsEnvioF(pSalesCrMemoLine.Type, pSalesCrMemoLine."No.") then
+        // se comprueba si la linea genera comision
+        if not HasCommissionF(pSalesCrMemoLine.Type, pSalesCrMemoLine."No.", pSalesCrMemoLine.RecordId()) then
             exit;
-
-        if not TieneComisionF(pSalesCrMemoLine.Type, pSalesCrMemoLine."No.") then
-            exit;
-
-        //Pasamos el importe de línea sin IVA, sin descuento de linea y sin transporte.
-        xlImporteSinTransporte := CalcularImporteLineaF(pSalesCrMemoLine."Line Amount", rlSalesCrMemoHeader."Currency Factor");
 
         if rlSalesCrMemoHeader.Get(pSalesCrMemoLine."Document No.") then begin
+
+            //Pasamos el importe de línea sin IVA, sin descuento de linea y sin transporte.
+            xlLineAmount := -pSalesCrMemoLine."Line Amount";
+            xlLineAmountLCY := ConvertCommissionBaseAmountF(xlLineAmount, rlSalesCrMemoHeader."Currency Factor");
+            xlCommissionBaseAmount := CalculateCommissionBaseAmountF(xlLineAmountLCY, pSalesCrMemoLine.RecordId(), rlSalesCrMemoHeader.RecordId());
+
             RegistrarComisionesGenericoF(rlTCNCommissionsCOMI.TipoDocumento::"Cr.Memo",
                 pSalesCrMemoLine."Document No.",
                 pSalesCrMemoLine."Line No.",
@@ -155,57 +177,76 @@ codeunit 7268900 "TCNFuncionesCommissionsCOMI"
                 pSalesCrMemoLine."Unit of Measure Code",
                 rlSalesCrMemoHeader."Posting Date",
                 pSalesCrMemoLine."Line Discount %",
-                -(xlImporteSinTransporte),
+                xlCommissionBaseAmount,
                 pSalesCrMemoLine."Sell-to Customer No.",
                 pSalesCrMemoLine."Shortcut Dimension 1 Code",
                 pSalesCrMemoLine."Shortcut Dimension 2 Code",
                 pSalesCrMemoLine."Dimension Set ID",
-                rlSalesCrMemoHeader."Salesperson Code");
+                rlSalesCrMemoHeader."Salesperson Code",
+                pSalesCrMemoLine."Responsibility Center",
+                xlLineAmountLCY,
+                            xlLineAmount,
+                rlSalesCrMemoHeader."Currency Code",
+                rlSalesCrMemoHeader."Currency Factor");
         end;
     end;
 
-    local procedure CalcularImporteLineaF(plAmount: Decimal; pCurrencyFactor: Decimal) xSalida: Decimal
-    var
-        xlTotalLinea: Decimal;
+    local procedure ConvertCommissionBaseAmountF(plAmount: Decimal; pCurrencyFactor: Decimal) xSalida: Decimal
     begin
-        rTCNCommissionsSetupCOMI.GetF();
         //Quitamos descuento de linea
-        xlTotalLinea := plAmount;
         if pCurrencyFactor = 0 then
             pCurrencyFactor := 1;
-        xlTotalLinea := xlTotalLinea / pCurrencyFactor;
+        xSalida := plAmount / pCurrencyFactor;
+    end;
+
+    local procedure CalculateCommissionBaseAmountF(pAmountLCY: Decimal; pSalesLineRecordId: RecordId; pSalesHeaderRecordId: RecordId) xSalida: Decimal
+    var
+        IsHandled: Boolean;
+    begin
+        rTCNCommissionsSetupCOMI.GetF();
+
+        OnBeforeCalculateCommissionBaseAmountF(pAmountLCY, pSalesLineRecordId, pSalesHeaderRecordId, xSalida, IsHandled);
+        if IsHandled then
+            exit;
+
         //Restamos el % de transporte a la línea
         if rTCNCommissionsSetupCOMI."Appl. Disc. Shipping Cost" then
-            xSalida := Round((xlTotalLinea * (100 - rTCNCommissionsSetupCOMI."Ship. Cost %") * 0.01), 0.01)
+            xSalida := Round((pAmountLCY * (100 - rTCNCommissionsSetupCOMI."Ship. Cost %") * 0.01), 0.01)
         else
-            xSalida := Round((xlTotalLinea), 0.01)
+            xSalida := Round((pAmountLCY), 0.01);
+
     end;
 
-    local procedure EsEnvioF(pTipoLinea: Enum TCNSalesLineTypeCOMI; pNumero: Code[20]) xSalida: Boolean
-    begin
-        rTCNCommissionsSetupCOMI.GetF();
-        xSalida := false;
-
-        if (rTCNCommissionsSetupCOMI."Ship. Cost Line Type" = pTipoLinea) then begin
-            if (rTCNCommissionsSetupCOMI."Ship. Cost Line No." = pNumero) then begin
-                xSalida := true;
-            end;
-        end;
-    end;
-
-    local procedure TieneComisionF(pTipoLinea: Enum TCNSalesLineTypeCOMI; pNumero: Code[20]) xSalida: Boolean
+    local procedure HasCommissionF(pTipoLinea: Enum TCNSalesLineTypeCOMI; pNumero: Code[20]; pSalesLineRecordId: RecordId) xSalida: Boolean
     var
         rlItem: Record Item;
+        IsHandled: Boolean;
     begin
         rTCNCommissionsSetupCOMI.GetF();
+
+        OnBeforeHasCommissionF(pTipoLinea, pNumero, pSalesLineRecordId, xSalida, IsHandled);
+        if IsHandled then
+            exit;
+
         xSalida := true;
 
+        // no debe ser linea de tipo cargo portes
+        if (rTCNCommissionsSetupCOMI."Ship. Cost Line Type" = pTipoLinea) then begin
+            if (rTCNCommissionsSetupCOMI."Ship. Cost Line No." = pNumero) then begin
+                xSalida := false;
+            end;
+        end;
+
+        // solo productos
         if pTipoLinea <> pTipoLinea::Item then
             xSalida := false;
-
+        // solo productos que existen
         if not rlItem.Get(pNumero) then
-            if rlItem.Type <> rlItem.Type::Inventory then
-                xSalida := false;
+            xSalida := false;
+        // solo productos inventariables
+        if rlItem.Type <> rlItem.Type::Inventory then
+            xSalida := false;
+
     end;
 
     procedure ApplyComissions(var parComisiones: Record TCNCommissionsCOMI)
@@ -276,7 +317,7 @@ codeunit 7268900 "TCNFuncionesCommissionsCOMI"
             rlPurchaseLine.Validate(Quantity, 1);
             rlPurchaseLine.Insert(true);
         end;
-        rlPurchaseLine."Direct Unit Cost" += parComisiones.Importecomision;
+        rlPurchaseLine."Direct Unit Cost" += parComisiones."Commission Amount";
         rlPurchaseLine.Validate("Direct Unit Cost");
         /*
         CASE parComisiones.TipoDocumento OF
@@ -376,7 +417,7 @@ codeunit 7268900 "TCNFuncionesCommissionsCOMI"
         // eliminar linea
         if not bMissingHeader then
             if not bMissingLine then begin
-                rlPurchaseLine."Direct Unit Cost" -= parComisiones.Importecomision;
+                rlPurchaseLine."Direct Unit Cost" -= parComisiones."Commission Amount";
                 if rlPurchaseLine."Direct Unit Cost" = 0 then
                     rlPurchaseLine.Delete(true)
                 else begin
@@ -408,6 +449,16 @@ codeunit 7268900 "TCNFuncionesCommissionsCOMI"
 
     [IntegrationEvent(false, false)]
     local procedure OnBeforeSetCommissionPct(var prSalespersonPurchaser: Record "Salesperson/Purchaser"; var prTCNCommissionsCOMI: Record TCNCommissionsCOMI)
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnBeforeCalculateCommissionBaseAmountF(pAmountLCY: Decimal; pSalesLineRecordId: RecordId; pSalesHeaderRecordId: RecordId; var pCommissionBaseAmount: Decimal; var IsHandled: Boolean)
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnBeforeHasCommissionF(pTipoLinea: Enum TCNSalesLineTypeCOMI; pNumero: Code[20]; pSalesLineRecordId: RecordId; var pHasCommission: Boolean; var IsHandled: Boolean)
     begin
     end;
 

@@ -44,28 +44,34 @@ table 7268901 "TCNCommissionsCOMI"
             Editable = false;
             DataClassification = CustomerContent;
         }
-        field(6; Importe; Decimal)
+        field(6; "Commission Base Amount"; Decimal)
         {
-            Caption = 'Amount';
+            Caption = 'Commission Base Amount'; // ENU=Commission Base Amount;ESP=Importe base comisión
             Editable = false;
             DataClassification = CustomerContent;
         }
-        field(7; "%Comision"; Decimal)
+        field(7; "Commission %"; Decimal)
         {
-            Caption = '% Commission';
+            Caption = 'Commission %'; // ENU=Commission %;ESP=% Comisión
             MinValue = 0;
             MaxValue = 100;
+            DecimalPlaces = 2 : 2;
             DataClassification = CustomerContent;
 
             trigger OnValidate()
+            var
+                IsHandled: Boolean;
             begin
                 Rec.TestField(Applicated, false);
-                Rec.Validate(Importecomision, "%Comision" * Importe * 0.01);
+                OnBeforeCalculateCommissionAmountF(Rec, IsHandled);
+                if IsHandled then
+                    exit;
+                Rec.Validate("Commission Amount", Rec."Commission %" * Rec."Commission Base Amount" * 0.01);
             end;
         }
-        field(8; Importecomision; Decimal)
+        field(8; "Commission Amount"; Decimal)
         {
-            Caption = 'Comission amount';
+            Caption = 'Comission Amount';
             Editable = false;
             DataClassification = CustomerContent;
         }
@@ -97,6 +103,7 @@ table 7268901 "TCNCommissionsCOMI"
             CalcFormula = lookup("Salesperson/Purchaser".Name WHERE("Code" = field(CodVendedor)));
             Editable = false;
         }
+        /*
         field(13; FechaLiquidacion; Date)
         {
             //FIXME Añadir proceso para cambiar dato
@@ -115,7 +122,8 @@ table 7268901 "TCNCommissionsCOMI"
             ObsoleteReason = 'New fields added';
             DataClassification = CustomerContent;
         }
-        field(15; "ItemNo."; Code[20])
+        */
+        field(15; "Item No."; Code[20])
         {
             Caption = 'Item No.';
             Editable = false;
@@ -126,7 +134,7 @@ table 7268901 "TCNCommissionsCOMI"
         {
             Caption = 'Item Desc.';
             FieldClass = FlowField;
-            CalcFormula = lookup("Item".Description WHERE("No." = field("ItemNo.")));
+            CalcFormula = lookup("Item".Description WHERE("No." = field("Item No.")));
             Editable = false;
         }
         field(17; Applicated; Boolean)
@@ -205,14 +213,14 @@ table 7268901 "TCNCommissionsCOMI"
             Caption = 'Unit of Measure Code';
             Editable = false;
             DataClassification = CustomerContent;
-            TableRelation = "Item Unit of Measure".Code where("Item No." = FIELD("ItemNo."));
+            TableRelation = "Item Unit of Measure".Code where("Item No." = FIELD("Item No."));
         }
         field(28; "Variant Code"; Code[10])
         {
             Caption = 'Variant Code';
             Editable = false;
             DataClassification = CustomerContent;
-            TableRelation = "Item Variant".Code where("Item No." = FIELD("ItemNo."));
+            TableRelation = "Item Variant".Code where("Item No." = FIELD("Item No."));
         }
         field(30; "Shortcut Dimension 1 Code"; Code[20])
         {
@@ -239,7 +247,7 @@ table 7268901 "TCNCommissionsCOMI"
 
             trigger OnLookup()
             begin
-                ShowDimensions();
+                Rec.ShowDimensions();
             end;
         }
         field(33; CodVendedorCli; Code[20])
@@ -250,6 +258,40 @@ table 7268901 "TCNCommissionsCOMI"
             CalcFormula = lookup(Customer."Salesperson Code" where("No." = field(CodCliente)));
             Editable = false;
         }
+        field(34; "Responsibility Center"; Code[10])
+        {
+            Caption = 'Responsibility Center'; // ENU=Responsibility Center;ESP=Centro responsabilidad
+            DataClassification = CustomerContent;
+            TableRelation = "Responsibility Center".Code;
+        }
+        field(35; Amount; Decimal)
+        {
+            Caption = 'Amount';
+            Editable = false;
+            AutoFormatType = 1;
+            AutoFormatExpression = "Currency Code";
+            DataClassification = CustomerContent;
+        }
+        field(36; "Currency Code"; Code[10])
+        {
+            Caption = 'Currency Code'; // ENU=Currency Code;ESP=Cód. divisa
+            TableRelation = Currency;
+            DataClassification = CustomerContent;
+        }
+        field(37; "Currency Factor"; Decimal)
+        {
+            Caption = 'Currency Factor'; // ENU=Currency Factor;ESP=Factor divisa
+            DecimalPlaces = 0 : 15;
+            MinValue = 0;
+            DataClassification = CustomerContent;
+        }
+        field(38; "Amount LCY"; Decimal)
+        {
+            Caption = 'Amount LCY';
+            Editable = false;
+            DataClassification = CustomerContent;
+        }
+
     }
 
     keys
@@ -276,6 +318,11 @@ table 7268901 "TCNCommissionsCOMI"
         DimMgt: Codeunit DimensionManagement;
     begin
         DimMgt.ShowDimensionSet(Rec."Dimension Set ID", CopyStr(STRSUBSTNO('%1 %2', Rec.TableCaption(), Rec."Entry No."), 1, 250));
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnBeforeCalculateCommissionAmountF(var prTCNCommissionsCOMI: Record TCNCommissionsCOMI; var IsHandled: Boolean)
+    begin
     end;
 
 }

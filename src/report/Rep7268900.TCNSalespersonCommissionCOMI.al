@@ -169,9 +169,9 @@ report 7268900 "TCNSalespersonCommissionCOMI"
                     //AdjProfit := "Sales (LCY)" + CostCalcMgt.CalcCustLedgActualCostLCY("Cust. Ledger Entry");
                     //AdjProfitCommissionAmt := Round(AdjProfit * "Salesperson/Purchaser"."Commission %" / 100);
                     rlComisiones.SetRange(NoDocumento, "Cust. Ledger Entry"."Document No.");
-                    rlComisiones.CalcSums(Importecomision, Importe);
-                    SalesCommissionAmt := rlComisiones.Importecomision;
-                    "Cust. Ledger Entry"."Sales (LCY)" := rlComisiones.Importe;
+                    rlComisiones.CalcSums("Commission Amount", "Commission Base Amount");
+                    SalesCommissionAmt := rlComisiones."Commission Amount";
+                    "Cust. Ledger Entry"."Sales (LCY)" := rlComisiones."Commission Base Amount";
                 end;
 
                 trigger OnPreDataItem()

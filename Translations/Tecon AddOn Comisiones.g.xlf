@@ -8,10 +8,15 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table TCNCommissionsCOMI - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Table 2596739409 - Field 1364211354 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>% Commission</source>
+        <trans-unit id="Table 2596739409 - Field 636392376 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Amount</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Table TCNCommissionsCOMI - Field %Comision - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table TCNCommissionsCOMI - Field Amount - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2596739409 - Field 688027766 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Amount LCY</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table TCNCommissionsCOMI - Field Amount LCY - Property Caption</note>
         </trans-unit>
         <trans-unit id="Table 2596739409 - Field 521384871 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Appl. Document Line No.</source>
@@ -63,6 +68,31 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table TCNCommissionsCOMI - Field CodVendedorCli - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 2596739409 - Field 399775988 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Commission %</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table TCNCommissionsCOMI - Field Commission % - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2596739409 - Field 4082300179 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Comission Amount</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table TCNCommissionsCOMI - Field Commission Amount - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2596739409 - Field 3564332552 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Commission Base Amount</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table TCNCommissionsCOMI - Field Commission Base Amount - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2596739409 - Field 4198939294 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Currency Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table TCNCommissionsCOMI - Field Currency Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2596739409 - Field 2324056710 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Currency Factor</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table TCNCommissionsCOMI - Field Currency Factor - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Table 2596739409 - Field 3322554545 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Dimension Set ID</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -78,25 +108,15 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table TCNCommissionsCOMI - Field FechaRegistro - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Table 2596739409 - Field 2272012708 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Amount</source>
+        <trans-unit id="Table 2596739409 - Field 568743302 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item No.</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Table TCNCommissionsCOMI - Field Importe - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Table 2596739409 - Field 673440237 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Comission amount</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Table TCNCommissionsCOMI - Field Importecomision - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table TCNCommissionsCOMI - Field Item No. - Property Caption</note>
         </trans-unit>
         <trans-unit id="Table 2596739409 - Field 1458141688 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Item Desc.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table TCNCommissionsCOMI - Field ItemDesc - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Table 2596739409 - Field 996997606 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Item No.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Table TCNCommissionsCOMI - Field ItemNo. - Property Caption</note>
         </trans-unit>
         <trans-unit id="Table 2596739409 - Field 2702998682 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Line Discount %</source>
@@ -137,6 +157,11 @@
           <source>Quantity (Base)</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table TCNCommissionsCOMI - Field Quantity (Base) - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2596739409 - Field 2247850105 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Responsibility Center</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table TCNCommissionsCOMI - Field Responsibility Center - Property Caption</note>
         </trans-unit>
         <trans-unit id="Table 2596739409 - Field 1577567912 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Shortcut Dimension 1 Code</source>
@@ -262,6 +287,11 @@
           <source>Modify Multiple</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page TCNCommissionsCOMI - Action ModifyMultiple - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2596739409 - Action 2309715740 - Method 1377591017 - NamedType 633208297" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Commission %</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page TCNCommissionsCOMI - Action ModifyMultiple - Method OnAction - NamedType clCommissionPctLbl</note>
         </trans-unit>
         <trans-unit id="Page 2596739409 - Action 1475414732 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Find all entries and documents that exist for the document number and posting date on the selected entry or document.</source>

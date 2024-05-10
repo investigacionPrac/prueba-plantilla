@@ -41,7 +41,7 @@ page 7268901 "TCNCommissionsCOMI"
                 {
                     ApplicationArea = All;
                 }
-                field("ItemNo."; Rec."ItemNo.")
+                field("Item No."; Rec."Item No.")
                 {
                     ApplicationArea = All;
                 }
@@ -69,20 +69,43 @@ page 7268901 "TCNCommissionsCOMI"
                     ApplicationArea = All;
                     Visible = false;
                 }
+                field(Amount; Rec.Amount)
+                {
+                    ApplicationArea = All;
+                    BlankZero = true;
+                    Visible = false;
+                }
+                field("Currency Code"; Rec."Currency Code")
+                {
+                    ApplicationArea = All;
+                    Visible = false;
+                }
+                field("Currency Factor"; Rec."Currency Factor")
+                {
+                    ApplicationArea = All;
+                    Visible = false;
+                }
+                field("Amount LCY"; Rec."Amount LCY")
+                {
+                    ApplicationArea = All;
+                    BlankZero = true;
+                    Visible = false;
+                }
                 field("Line Discount %"; Rec."Line Discount %")
                 {
                     ApplicationArea = All;
                     BlankZero = true;
+                    Visible = false;
                 }
-                field(Importe; Rec.Importe)
+                field("Commission Base Amount"; Rec."Commission Base Amount")
                 {
                     ApplicationArea = All;
                 }
-                field("%Comision"; Rec."%Comision")
+                field("Commission %"; Rec."Commission %")
                 {
                     ApplicationArea = All;
                 }
-                field(Importecomision; Rec.Importecomision)
+                field("Commission Amount"; Rec."Commission Amount")
                 {
                     ApplicationArea = All;
                 }
@@ -201,23 +224,24 @@ page 7268901 "TCNCommissionsCOMI"
 
                 trigger OnAction()
                 var
-                    rlComisiones: record TCNCommissionsCOMI;
-                    plEntradadedatos: page TCN_EntradaDeDatos;
+                    rlComisiones: Record TCNCommissionsCOMI;
+                    plEntradadedatos: Page TCN_EntradaDeDatos;
                     xPct: Decimal;
+                    clCommissionPctLbl: Label 'Commission %';
                 begin
                     CurrPage.SETSELECTIONFILTER(rlComisiones);
 
                     plEntradadedatos.SETTITTLE('Indicar el nuevo %');
-                    xPct := Rec."%Comision";
-                    plEntradadedatos.ADDDECIMAL('% comision', xPct);
+                    xPct := Rec."Commission %";
+                    plEntradadedatos.ADDDECIMAL(clCommissionPctLbl, xPct);
                     if plEntradadedatos.RUNMODAL() = Action::Yes then
                         xPct := plEntradadedatos.GETDECIMAL()
                     else
-                        ERROR('Proceso cancelado por el usuario');
+                        Error('Proceso cancelado por el usuario');
 
-                    if rlComisiones.FindSet() then
+                    if rlComisiones.FindSet(true, false) then
                         repeat
-                            rlComisiones.Validate("%Comision", xPct);
+                            rlComisiones.Validate("Commission %", xPct);
                             rlComisiones.Modify(true);
                         until rlComisiones.Next() = 0;
                 end;
@@ -240,16 +264,16 @@ page 7268901 "TCNCommissionsCOMI"
                 begin
                     CurrPage.SetSelectionFilter(rlComisiones);
 
-                    rlComisiones.CalcSums(Importecomision);
+                    rlComisiones.CalcSums("Commission Amount");
 
                     if GuiAllowed then
-                        Message(StrSubstNo(clMessage, rlComisiones.COUNT(), rlComisiones.Importecomision));
+                        Message(StrSubstNo(clMessage, rlComisiones.Count(), rlComisiones."Commission Amount"));
 
                     if rlComisiones.FindSet(true, false) then
                         repeat
 
                             culTCNFuncionesCommissionsCOMI.ApplyComissions(rlComisiones);
-                            rlComisiones.Modify(TRUE);
+                            rlComisiones.Modify(true);
 
                         until rlComisiones.Next() = 0;
                 end;
@@ -270,10 +294,10 @@ page 7268901 "TCNCommissionsCOMI"
                 begin
                     CurrPage.SetSelectionFilter(rlComisiones);
 
-                    rlComisiones.CalcSums(Importecomision);
+                    rlComisiones.CalcSums("Commission Amount");
 
                     if GuiAllowed then
-                        Message(StrSubstNo(clMessage, rlComisiones.COUNT(), rlComisiones.Importecomision));
+                        Message(StrSubstNo(clMessage, rlComisiones.Count(), rlComisiones."Commission Amount"));
 
                     if rlComisiones.FindSet(true, false) then
                         repeat
@@ -283,7 +307,7 @@ page 7268901 "TCNCommissionsCOMI"
                             rlComisiones := rlComisiones2;
                             rlComisiones.Modify(true);
 
-                        until rlComisiones.NEXT() = 0;
+                        until rlComisiones.Next() = 0;
                 end;
             }
 
@@ -329,9 +353,9 @@ page 7268901 "TCNCommissionsCOMI"
     begin
         rlTCNCommissionsCOMI.CopyFilters(Rec);
 
-        rlTCNCommissionsCOMI.CalcSums(Importe, Importecomision);
-        xTotalSales := rlTCNCommissionsCOMI.Importe;
-        xTotalCommission := rlTCNCommissionsCOMI.Importecomision;
+        rlTCNCommissionsCOMI.CalcSums("Commission Base Amount", "Commission Amount");
+        xTotalSales := rlTCNCommissionsCOMI."Commission Base Amount";
+        xTotalCommission := rlTCNCommissionsCOMI."Commission Amount";
     end;
 
 }
