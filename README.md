@@ -5,6 +5,7 @@ APP de gestion de comisiones
 ## Lista de cosas pendientes
 dejar campos con nombres estandares y traducciones
 permisos de usuario al consultar solo sus comisiones
+añadir mov comisiones en procesar de Navegar
 opcion de cambiar importe comision en vez de usar %
 tomar en cuenta importes de descuento linea, factura y pronto pago
 controlar divisa proveedor (poco probable)
@@ -18,4 +19,3 @@ diferencia cambio con lo cobrado
 
 # 20240510
     version inicial sin probar
-    
