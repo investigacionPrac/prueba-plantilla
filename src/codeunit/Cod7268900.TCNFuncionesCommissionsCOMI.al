@@ -447,12 +447,11 @@ codeunit 7268900 "TCNFuncionesCommissionsCOMI"
     local procedure GetNextApplicacionInvoiceNo() xInvoiceNo: Code[20]
     var
         NoSeriesMgt: Codeunit NoSeriesManagement;
+    //NoSeriesMgt: Codeunit "No. Series"; // BC24 
     begin
-
         rTCNCommissionsSetupCOMI.getF();
-
         if rTCNCommissionsSetupCOMI."Appl. Invoice Nos." <> '' then
-            NoSeriesMgt.InitSeries(rTCNCommissionsSetupCOMI."Appl. Invoice Nos.", rTCNCommissionsSetupCOMI."Appl. Invoice Nos.", 0D, xInvoiceNo, rTCNCommissionsSetupCOMI."Appl. Invoice Nos.");
+            xInvoiceNo := NoSeriesMgt.GetNextNo(rTCNCommissionsSetupCOMI."Appl. Invoice Nos.", WorkDate(), true);
     end;
 
     [IntegrationEvent(false, false)]
