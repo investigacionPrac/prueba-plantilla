@@ -17,5 +17,8 @@ APP de gestion de comisiones
 
 ## Historial de versiones
 
+# 20240704
+    Cambio rango a 7268940
+
 # 20240510
     version inicial sin probar

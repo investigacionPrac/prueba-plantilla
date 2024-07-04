@@ -2,7 +2,7 @@
 <PermissionSets>
   <PermissionSet RoleID="TECON ADDON COMI." RoleName="Tecon AddOn Comisiones">
     <Permission>
-      <ObjectID>7268900</ObjectID>
+      <ObjectID>7268941</ObjectID>
       <ObjectType>0</ObjectType>
       <ReadPermission>1</ReadPermission>
       <InsertPermission>1</InsertPermission>
@@ -12,7 +12,7 @@
       <SecurityFilter />
     </Permission>
     <Permission>
-      <ObjectID>7268900</ObjectID>
+      <ObjectID>7268941</ObjectID>
       <ObjectType>1</ObjectType>
       <ReadPermission>0</ReadPermission>
       <InsertPermission>0</InsertPermission>
@@ -22,7 +22,7 @@
       <SecurityFilter />
     </Permission>
     <Permission>
-      <ObjectID>7268901</ObjectID>
+      <ObjectID>7268940</ObjectID>
       <ObjectType>0</ObjectType>
       <ReadPermission>1</ReadPermission>
       <InsertPermission>1</InsertPermission>
@@ -32,7 +32,7 @@
       <SecurityFilter />
     </Permission>
     <Permission>
-      <ObjectID>7268901</ObjectID>
+      <ObjectID>7268940</ObjectID>
       <ObjectType>1</ObjectType>
       <ReadPermission>0</ReadPermission>
       <InsertPermission>0</InsertPermission>
@@ -42,7 +42,7 @@
       <SecurityFilter />
     </Permission>
     <Permission>
-      <ObjectID>7268902</ObjectID>
+      <ObjectID>7268944</ObjectID>
       <ObjectType>5</ObjectType>
       <ReadPermission>0</ReadPermission>
       <InsertPermission>0</InsertPermission>
@@ -52,7 +52,7 @@
       <SecurityFilter />
     </Permission>
     <Permission>
-      <ObjectID>7268900</ObjectID>
+      <ObjectID>7268943</ObjectID>
       <ObjectType>5</ObjectType>
       <ReadPermission>0</ReadPermission>
       <InsertPermission>0</InsertPermission>
@@ -62,7 +62,7 @@
       <SecurityFilter />
     </Permission>
     <Permission>
-      <ObjectID>7268901</ObjectID>
+      <ObjectID>7268942</ObjectID>
       <ObjectType>5</ObjectType>
       <ReadPermission>0</ReadPermission>
       <InsertPermission>0</InsertPermission>
@@ -72,7 +72,7 @@
       <SecurityFilter />
     </Permission>
     <Permission>
-      <ObjectID>7268904</ObjectID>
+      <ObjectID>7268941</ObjectID>
       <ObjectType>5</ObjectType>
       <ReadPermission>0</ReadPermission>
       <InsertPermission>0</InsertPermission>
@@ -82,7 +82,7 @@
       <SecurityFilter />
     </Permission>
     <Permission>
-      <ObjectID>7268903</ObjectID>
+      <ObjectID>7268940</ObjectID>
       <ObjectType>5</ObjectType>
       <ReadPermission>0</ReadPermission>
       <InsertPermission>0</InsertPermission>
@@ -92,7 +92,7 @@
       <SecurityFilter />
     </Permission>
     <Permission>
-      <ObjectID>7268901</ObjectID>
+      <ObjectID>7268943</ObjectID>
       <ObjectType>8</ObjectType>
       <ReadPermission>0</ReadPermission>
       <InsertPermission>0</InsertPermission>
@@ -102,7 +102,7 @@
       <SecurityFilter />
     </Permission>
     <Permission>
-      <ObjectID>7268900</ObjectID>
+      <ObjectID>7268942</ObjectID>
       <ObjectType>8</ObjectType>
       <ReadPermission>0</ReadPermission>
       <InsertPermission>0</InsertPermission>
@@ -112,7 +112,7 @@
       <SecurityFilter />
     </Permission>
     <Permission>
-      <ObjectID>7268903</ObjectID>
+      <ObjectID>7268941</ObjectID>
       <ObjectType>8</ObjectType>
       <ReadPermission>0</ReadPermission>
       <InsertPermission>0</InsertPermission>
@@ -122,7 +122,7 @@
       <SecurityFilter />
     </Permission>
     <Permission>
-      <ObjectID>7268902</ObjectID>
+      <ObjectID>7268940</ObjectID>
       <ObjectType>8</ObjectType>
       <ReadPermission>0</ReadPermission>
       <InsertPermission>0</InsertPermission>
@@ -132,7 +132,7 @@
       <SecurityFilter />
     </Permission>
     <Permission>
-      <ObjectID>7268900</ObjectID>
+      <ObjectID>7268940</ObjectID>
       <ObjectType>3</ObjectType>
       <ReadPermission>0</ReadPermission>
       <InsertPermission>0</InsertPermission>

@@ -1,4 +1,4 @@
-table 7268901 "TCNCommissionsCOMI"
+table 7268941 "TCNCommissionsCOMI"
 {
     Caption = 'Commissions';
     DataClassification = CustomerContent;

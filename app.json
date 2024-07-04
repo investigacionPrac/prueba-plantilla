@@ -4,7 +4,7 @@
   "publisher": "TCN",
   "brief": "Gestión de comisiones",
   "description": "Se gestionan y liquidan las comisones de vendedores",
-  "version": "1.0.20240510.0",
+  "version": "1.0.20240704.0",
   "privacyStatement": "https://www.tecon.es/",
   "EULA": "https://www.tecon.es/",
   "help": "https://www.tecon.es/",
@@ -24,8 +24,8 @@
   "application": "13.0.0.0",
   "idRanges": [
     {
-      "from": 7268900,
-      "to": 7268909
+      "from": 7268940,
+      "to": 7268949
     }
   ],
   "runtime": "3.0",

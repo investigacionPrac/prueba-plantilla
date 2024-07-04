@@ -1,4 +1,4 @@
-codeunit 7268904 "TCNCuActualizacionCOMI"
+codeunit 7268944 "TCNCuActualizacionCOMI"
 {
     Subtype = Upgrade;
 

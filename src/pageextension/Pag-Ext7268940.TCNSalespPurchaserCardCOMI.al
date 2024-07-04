@@ -1,4 +1,4 @@
-pageextension 7268900 "TCNSalespPurchaserCardCOMI" extends "Salesperson/Purchaser Card"
+pageextension 7268940 "TCNSalespPurchaserCardCOMI" extends "Salesperson/Purchaser Card"
 {
     layout
     {
