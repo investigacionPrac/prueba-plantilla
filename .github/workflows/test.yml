@@ -1,0 +1,15 @@
+name: debug
+
+on: 
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: windows-latest
+
+    steps:
+      - name: prueba
+        run: |
+          $app = Get-Content './app.json' -Raw | ConvertFrom-Json
+          $appName = $app.Name
+          Write-Host "App Name: $appName"
